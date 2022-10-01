@@ -4,10 +4,10 @@ import 'package:meta/meta.dart';
 part 'document_controller_state.dart';
 
 class DocumentControllerCubit extends Cubit<DocumentControllerState> {
-  double topFactor = 10;
-  double leftFactor = 10;
-  double scaleFactor = 1;
-  double fontSizeFactor = 6;
+  double topFactor = 0.8;
+  double leftFactor = 0.0;
+  double scaleFactor = 0.7;
+  double fontSizeFactor = 0.2;
 
   DocumentControllerCubit() : super(DocumentControllerInitial());
 
