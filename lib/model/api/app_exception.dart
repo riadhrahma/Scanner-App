@@ -1,0 +1,1 @@
+class NoImageSelected implements Exception {}
