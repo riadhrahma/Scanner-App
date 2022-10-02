@@ -22,7 +22,9 @@ class PickImageScreen extends StatefulWidget {
 class _PickImageScreenState extends State<PickImageScreen> {
   @override
   Widget build(BuildContext context) {
-    final Size size = MediaQuery.of(context).size;
+    final Size size = MediaQuery
+        .of(context)
+        .size;
     return Stack(
       children: [
         Image.asset(
@@ -52,23 +54,24 @@ class _PickImageScreenState extends State<PickImageScreen> {
                 listeners: [
                   BlocListener<ImageProcessingBloc, ImageProcessingState>(
                       listener: (context, state) {
-                    if (state is ExtractTextFrmImageState) {
-                      Navigator.pop(context);
-                      Navigator.push(context,
-                          MaterialPageRoute(builder: (BuildContext context) {
-                        return DocumentScreenContent(
-                          documentCore: state.documentCore,
-                        );
-                      }));
-                    }
-                  }),
+                        if (state is ExtractTextFrmImageState) {
+                          Navigator.pop(context);
+                          Navigator.push(context,
+                              MaterialPageRoute(
+                                  builder: (BuildContext context) {
+                                    return DocumentScreenContent(
+                                      documentCore: state.documentCore,
+                                    );
+                                  }));
+                        }
+                      }),
                   BlocListener<ImagePickCubit, ImagePickState>(
                     listener: (context, state) {
                       if (state is ImagePickLoading) {
                         Navigator.push(context,
                             MaterialPageRoute(builder: (BuildContext context) {
-                          return const LoadingScreen();
-                        }));
+                              return const LoadingScreen();
+                            }));
                       }
                       if (state is ImagePickSuccess) {
                         BlocProvider.of<ImageProcessingBloc>(context)
@@ -105,6 +108,20 @@ class _PickImageScreenState extends State<PickImageScreen> {
                         displayFullTextOnTap: true,
                         stopPauseOnTap: false,
                       ),
+                    ),
+                    BlocBuilder<ImagePickCubit, ImagePickState>(
+                      builder: (context, state) {
+                        return InkWell(
+                          onTap: () {
+                            //just to refresh the future builder that fetch document from cache
+                            context.read<ImagePickCubit>().refreshUi();
+                          },
+                          child: Image.asset(
+                            AppAssets.printer,
+                            width: 150,
+                          ),
+                        );
+                      },
                     ),
                     const PreviousDocuments(),
                     Row(

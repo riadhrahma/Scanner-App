@@ -4,8 +4,8 @@ import 'package:path_provider/path_provider.dart';
 import 'package:uuid/uuid.dart';
 
 class CachedImagesServices {
-  static const String boxName = 'documents';
-  static const String dataKey = 'data';
+  static const String boxName = 'documentsssjt';
+  static const String dataKey = 'datassjt';
 
   static BoxCollection? collection;
 
@@ -45,13 +45,14 @@ class CachedImagesServices {
   ///Nb this is the release version of initCashedDb
 
   static Future<void> initCashedDb() async {
-    if(collection==null){
-    final directory = await getApplicationDocumentsDirectory();
-    Hive.init(directory.path);
-    collection = await BoxCollection.open(
-      boxName,
-      {dataKey},
-      path: directory.path,
-    );}
+    if (collection == null) {
+      final directory = await getApplicationDocumentsDirectory();
+      Hive.init(directory.path);
+      collection = await BoxCollection.open(
+        boxName,
+        {dataKey},
+        path: directory.path,
+      );
+    }
   }
 }

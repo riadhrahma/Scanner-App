@@ -1,6 +1,5 @@
-import 'package:flutter/foundation.dart';
+
 import 'package:flutter/material.dart';
-import 'package:flutter/rendering.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:labhouse/model/document_controller/cubit/document_controller_cubit.dart';
@@ -22,7 +21,7 @@ class DocumentScreenContent extends StatefulWidget {
 }
 
 class _DocumentScreenContentState extends State<DocumentScreenContent> {
-  bool _showOptions = true;
+
 
   final GlobalKey _key = GlobalKey();
 
@@ -82,7 +81,7 @@ class _DocumentScreenContentState extends State<DocumentScreenContent> {
                     ),
                   ),
                 ),
-                if (_showOptions)
+
                   Align(
                     alignment: Alignment.topRight,
                     child: Padding(
@@ -117,11 +116,10 @@ class _DocumentScreenContentState extends State<DocumentScreenContent> {
                       ),
                     ),
                   ),
-
-                  const Align(
-                    alignment: Alignment.bottomCenter,
-                    child: ImageSliders(),
-                  ),
+                const Align(
+                  alignment: Alignment.bottomCenter,
+                  child: ImageSliders(),
+                ),
               ],
             ),
           );

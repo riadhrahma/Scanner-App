@@ -27,6 +27,7 @@ dependencies:
   uuid: any
   path_provider: any
   carousel_slider: ^4.1.1
+  photo_view: ^0.14.0
 
 dev_dependencies:
   flutter_test:

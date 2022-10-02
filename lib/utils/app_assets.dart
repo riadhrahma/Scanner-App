@@ -3,4 +3,6 @@ class AppAssets{
 
   static const String camera='assets/icons/camera.png';
   static const String gallery='assets/icons/gallery.png';
+  static const String printer='assets/printer.png';
+
 }

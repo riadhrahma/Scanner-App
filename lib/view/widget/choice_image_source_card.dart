@@ -16,7 +16,9 @@ class ChoiceImageSourceCard extends StatelessWidget {
       case ImageSource.camera:
         mainView = InkWell(
           onTap: () {
-            context.read<ImagePickCubit>().pickImage(imageSource: imageSource);
+            context.read<ImagePickCubit>().pickImage(
+                  imageSource: imageSource,
+                );
           },
           child: Card(
             child: Padding(
@@ -24,8 +26,13 @@ class ChoiceImageSourceCard extends StatelessWidget {
               child: Column(
                 mainAxisSize: MainAxisSize.min,
                 children: [
-                  Image.asset(AppAssets.camera),
-                  const Text('Camera',),
+                  Image.asset(
+                    AppAssets.camera,
+                    width: 30,
+                  ),
+                  const Text(
+                    'Camera',
+                  ),
                 ],
               ),
             ),
@@ -44,7 +51,10 @@ class ChoiceImageSourceCard extends StatelessWidget {
               child: Column(
                 mainAxisSize: MainAxisSize.min,
                 children: [
-                  Image.asset(AppAssets.gallery),
+                  Image.asset(
+                    AppAssets.gallery,
+                    width: 30,
+                  ),
                   const Text('Gallery'),
                 ],
               ),
@@ -54,8 +64,10 @@ class ChoiceImageSourceCard extends StatelessWidget {
         break;
     }
     return BlocBuilder<ImagePickCubit, ImagePickState>(
-        builder: (context, object) {
-      return mainView;
-    });
+      builder: (context, object) {
+        return mainView;
+      },
+      buildWhen: (oldValue, newValue) => oldValue != newValue,
+    );
   }
 }

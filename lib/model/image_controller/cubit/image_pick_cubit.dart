@@ -21,4 +21,8 @@ class ImagePickCubit extends Cubit<ImagePickState> {
       emit(ImagePickFailed());
     }
   }
+
+  void refreshUi(){
+    emit(ImagePickInitial());
+  }
 }
