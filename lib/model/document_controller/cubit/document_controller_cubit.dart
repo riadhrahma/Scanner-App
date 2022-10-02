@@ -7,7 +7,7 @@ import 'package:flutter/rendering.dart';
 import 'package:labhouse/model/cached_document.dart';
 import 'package:labhouse/model/services/cached_images_services.dart';
 import 'package:labhouse/model/services/image_services.dart';
-import 'package:meta/meta.dart';
+
 
 part 'document_controller_state.dart';
 
@@ -62,7 +62,7 @@ class DocumentControllerCubit extends Cubit<DocumentControllerState> {
 
         final ImageService imageService = ImageService();
         final String filePath = await imageService.saveImage(pngBytes);
-print(filePath);
+
         final CachedDocument cachedDocument =
             CachedDocument(filePath, DateTime.now());
 
@@ -73,7 +73,7 @@ print(filePath);
         emit(SaveDocumentFailed());
       }
     } catch (e) {
-      print(e);
+
       emit(SaveDocumentFailed());
     }
   }

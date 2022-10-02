@@ -2,6 +2,7 @@ import 'package:bloc/bloc.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:labhouse/model/document_core.dart';
 import 'package:labhouse/model/services/google_kit_services.dart';
+// ignore: depend_on_referenced_packages
 import 'package:meta/meta.dart';
 
 part 'image_processing_event.dart';
