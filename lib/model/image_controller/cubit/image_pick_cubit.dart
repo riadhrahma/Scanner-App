@@ -1,5 +1,5 @@
 import 'package:bloc/bloc.dart';
-import 'package:camera/camera.dart';
+
 import 'package:image_picker/image_picker.dart';
 import 'package:labhouse/model/services/image_services.dart';
 import 'package:meta/meta.dart';
@@ -14,6 +14,7 @@ class ImagePickCubit extends Cubit<ImagePickState> {
     emit(ImagePickLoading());
     ImageService imageService = ImageService();
     final result = await imageService.pickImage(imageSource: imageSource);
+    print(result?.path);
     if (result != null) {
       emit(ImagePickSuccess(file: result));
     } else {

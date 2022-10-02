@@ -26,6 +26,7 @@ dependencies:
   hive: ^2.2.3
   uuid: any
   path_provider: any
+  carousel_slider: ^4.1.1
 
 dev_dependencies:
   flutter_test:

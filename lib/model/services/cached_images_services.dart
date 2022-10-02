@@ -11,6 +11,7 @@ class CachedImagesServices {
 
   static Future<List<CachedDocument>> getCachedDocuments() async {
     try {
+      initCashedDb();
       final CollectionBox<Map<dynamic, dynamic>> dataBox =
           await collection!.openBox<Map>(dataKey);
 
@@ -23,6 +24,7 @@ class CachedImagesServices {
   }
 
   static Future<void> saveDocument(CachedDocument cachedDocument) async {
+    initCashedDb();
     final CollectionBox<Map<dynamic, dynamic>> dataBox =
         await collection!.openBox<Map>(dataKey);
     final String documentId = const Uuid().v4();
@@ -41,14 +43,15 @@ class CachedImagesServices {
   // }
 
   ///Nb this is the release version of initCashedDb
-  @override
-  Future<void> initCashedDb() async {
+
+  static Future<void> initCashedDb() async {
+    if(collection==null){
     final directory = await getApplicationDocumentsDirectory();
     Hive.init(directory.path);
     collection = await BoxCollection.open(
       boxName,
       {dataKey},
       path: directory.path,
-    );
+    );}
   }
 }

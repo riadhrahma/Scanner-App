@@ -9,7 +9,8 @@ class ImageSliders extends StatelessWidget {
   Widget build(BuildContext context) {
     return BlocBuilder<DocumentControllerCubit, DocumentControllerState>(
       builder: (context, state) {
-        return SingleChildScrollView(
+        if( (context.read<DocumentControllerCubit>().showDocumentSliders)) {
+          return SingleChildScrollView(
           child: Column(
             children: [
               const Text('scale factor'),
@@ -37,6 +38,10 @@ class ImageSliders extends StatelessWidget {
             ],
           ),
         );
+        }
+        else{
+          return SizedBox.shrink();
+        }
       },
     );
   }

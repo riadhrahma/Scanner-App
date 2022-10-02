@@ -3,17 +3,17 @@ import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:image_gallery_saver/image_gallery_saver.dart';
 import 'package:labhouse/model/document_controller/cubit/document_controller_cubit.dart';
 import 'package:labhouse/model/document_core.dart';
+import 'package:labhouse/utils/floater.dart';
+import 'package:labhouse/view/screen/loading_screen.dart';
 import 'package:labhouse/view/widget/image_sliders.dart';
-import 'dart:ui' as ui;
-import 'dart:typed_data';
-
+import 'package:labhouse/view/widget/info.dart';
 import 'package:labhouse/view/widget/text_block_widget.dart';
 
 class DocumentScreenContent extends StatefulWidget {
   final DocumentCore documentCore;
+
   const DocumentScreenContent({Key? key, required this.documentCore})
       : super(key: key);
 
@@ -23,33 +23,8 @@ class DocumentScreenContent extends StatefulWidget {
 
 class _DocumentScreenContentState extends State<DocumentScreenContent> {
   bool _showOptions = true;
-  bool _showDocumentSliders = true;
 
   final GlobalKey _key = GlobalKey();
-
-  void _takeScreenshot() async {
-    RenderRepaintBoundary boundary =
-        _key.currentContext!.findRenderObject() as RenderRepaintBoundary;
-
-    ui.Image image = await boundary.toImage();
-    ByteData? byteData = await image.toByteData(format: ui.ImageByteFormat.png);
-    if (byteData != null) {
-      Uint8List pngBytes = byteData.buffer.asUint8List();
-
-      // Saving the screenshot to the gallery
-      final result = await ImageGallerySaver.saveImage(
-          Uint8List.fromList(pngBytes),
-          quality: 90,
-          name: 'screenshot-${DateTime.now()}.png');
-
-      if (kDebugMode) {
-        print(result);
-      }
-    }
-    setState(() {
-      _showOptions = true;
-    });
-  }
 
   @override
   Widget build(BuildContext context) {
@@ -64,20 +39,47 @@ class _DocumentScreenContentState extends State<DocumentScreenContent> {
                   key: _key,
                   child: Scaffold(
                     backgroundColor: Colors.white,
-                    body: Transform.scale(
-                        alignment: Alignment.topCenter,
-                        scale:
-                            context.read<DocumentControllerCubit>().scaleFactor,
-                        child: Stack(
-                          children:
-                              widget.documentCore.documentComponents.blocks
-                                  .map(
-                                    (e) => TextBlockWidget(
-                                      textBloc: e,
-                                    ),
-                                  )
-                                  .toList(),
-                        )),
+                    body: BlocListener<DocumentControllerCubit,
+                        DocumentControllerState>(
+                      listener: (context, state) {
+                        if (state is DocumentControllerLoading) {
+                          //of course it can be replaced by pushed named
+                          Navigator.push(context, MaterialPageRoute(
+                              builder: (BuildContext context) {
+                            return const LoadingScreen();
+                          }));
+                        }
+                        if (state is SaveDocumentSuccess) {
+                          Navigator.pop(context);
+                          const InfoView(
+                            message: "document Saved",
+                            infoType: InfoType.success,
+                          ).showOnBottomSheet(context);
+                        }
+                        if (state is SaveDocumentFailed) {
+                          Navigator.pop(context);
+                          const InfoView(
+                            message: "no document Saved",
+                            infoType: InfoType.failed,
+                          ).showOnBottomSheet(context);
+                        }
+                      },
+                      child: Transform.scale(
+                          alignment: Alignment.topCenter,
+                          scale: context
+                              .read<DocumentControllerCubit>()
+                              .scaleFactor,
+                          child: Stack(
+                            children:
+                                widget.documentCore.documentComponents.blocks
+                                    .map(
+                                      (e) => TextBlockWidget(
+                                        textBloc: e,
+                                      ),
+                                    )
+                                    .toList(),
+                          )),
+                    ),
                   ),
                 ),
                 if (_showOptions)
@@ -90,7 +92,9 @@ class _DocumentScreenContentState extends State<DocumentScreenContent> {
                         children: [
                           IconButton(
                               onPressed: () {
-                                _takeScreenshot();
+                                context
+                                    .read<DocumentControllerCubit>()
+                                    .takeScreenshot(key: _key);
                               },
                               icon: const Icon(Icons.save)),
                           IconButton(
@@ -101,19 +105,19 @@ class _DocumentScreenContentState extends State<DocumentScreenContent> {
                               },
                               icon: const Icon(Icons.copy)),
                           IconButton(
-                              onPressed: () {
-                                setState(() {
-                                  _showDocumentSliders = !_showDocumentSliders;
-                                });
-                              },
-                              icon: Icon(_showDocumentSliders
+                              onPressed: () => context
+                                  .read<DocumentControllerCubit>()
+                                  .showHideSliders(),
+                              icon: Icon(context
+                                      .read<DocumentControllerCubit>()
+                                      .showDocumentSliders
                                   ? Icons.close
                                   : Icons.equalizer)),
                         ],
                       ),
                     ),
                   ),
-                if (_showDocumentSliders)
+
                   const Align(
                     alignment: Alignment.bottomCenter,
                     child: ImageSliders(),
@@ -122,6 +126,7 @@ class _DocumentScreenContentState extends State<DocumentScreenContent> {
             ),
           );
         },
+        buildWhen: (oldValue, newValue) => oldValue != newValue,
       ),
     );
   }

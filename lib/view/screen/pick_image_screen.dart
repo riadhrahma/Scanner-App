@@ -5,9 +5,12 @@ import 'package:image_picker/image_picker.dart';
 import 'package:labhouse/model/image_controller/bloc/image_processing_bloc.dart';
 import 'package:labhouse/model/image_controller/cubit/image_pick_cubit.dart';
 import 'package:labhouse/utils/app_assets.dart';
+import 'package:labhouse/utils/floater.dart';
 import 'package:labhouse/view/screen/document_content_screen.dart';
 import 'package:labhouse/view/screen/loading_screen.dart';
 import 'package:labhouse/view/widget/choice_image_source_card.dart';
+import 'package:labhouse/view/widget/info.dart';
+import 'package:labhouse/view/widget/previous_documents.dart';
 
 class PickImageScreen extends StatefulWidget {
   const PickImageScreen({Key? key}) : super(key: key);
@@ -73,6 +76,10 @@ class _PickImageScreenState extends State<PickImageScreen> {
                       }
                       if (state is ImagePickFailed) {
                         Navigator.pop(context);
+                        const InfoView(
+                          message: "something wrong or image no selected",
+                          infoType: InfoType.failed,
+                        ).showOnBottomSheet(context);
                       }
                     },
                   )
@@ -81,7 +88,7 @@ class _PickImageScreenState extends State<PickImageScreen> {
                   mainAxisSize: MainAxisSize.min,
                   children: [
                     Padding(
-                      padding: const EdgeInsets.only(bottom: 200),
+                      padding: const EdgeInsets.only(bottom: 8),
                       child: AnimatedTextKit(
                         animatedTexts: [
                           TypewriterAnimatedText(
@@ -99,6 +106,7 @@ class _PickImageScreenState extends State<PickImageScreen> {
                         stopPauseOnTap: false,
                       ),
                     ),
+                    const PreviousDocuments(),
                     Row(
                       mainAxisSize: MainAxisSize.min,
                       children: const [
