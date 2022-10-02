@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:labhouse/model/image_controller/cubit/image_pick_cubit.dart';
+import 'package:labhouse/utils/app_assets.dart';
 
 class ChoiceImageSourceCard extends StatelessWidget {
   final ImageSource imageSource;
@@ -22,9 +23,9 @@ class ChoiceImageSourceCard extends StatelessWidget {
               padding: const EdgeInsets.all(22.0),
               child: Column(
                 mainAxisSize: MainAxisSize.min,
-                children: const [
-                  Icon(Icons.camera),
-                  Text('Camera'),
+                children: [
+                  Image.asset(AppAssets.camera),
+                  const Text('Camera',),
                 ],
               ),
             ),
@@ -42,9 +43,9 @@ class ChoiceImageSourceCard extends StatelessWidget {
               padding: const EdgeInsets.all(22.0),
               child: Column(
                 mainAxisSize: MainAxisSize.min,
-                children: const [
-                  Icon(Icons.image),
-                  Text('Gallery'),
+                children: [
+                  Image.asset(AppAssets.gallery),
+                  const Text('Gallery'),
                 ],
               ),
             ),
