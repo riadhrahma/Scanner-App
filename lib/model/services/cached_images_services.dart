@@ -4,8 +4,8 @@ import 'package:path_provider/path_provider.dart';
 import 'package:uuid/uuid.dart';
 
 class CachedImagesServices {
-  static const String boxName = 'documentsssjt';
-  static const String dataKey = 'datassjt';
+  static const String boxName = 'documents';
+  static const String dataKey = 'data';
 
   static BoxCollection? collection;
 
